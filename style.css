@@ -1,0 +1,377 @@
+/* ===== RESET GERAL ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: radial-gradient(circle at center, #263b35, #101713);
+    color: #fff;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+/* ===== CABEÇALHO ===== */
+header {
+    padding: 15px;
+}
+
+header h1 {
+    color: #f5d77a;
+    font-size: 32px;
+    text-shadow: 0 3px 8px #000;
+    letter-spacing: 3px;
+}
+
+/* ===== MESA DE JOGO ===== */
+.mesa {
+    background-color: #07512f; /* Cor de fundo que muda */
+    border: 15px solid #704426;
+    border-radius: 35px;
+    box-shadow:
+        0 12px 0 #422715,
+        0 25px 40px #0009,
+        inset 0 0 35px #00391d;
+    min-height: 550px;
+    margin: 20px auto;
+    padding: 25px;
+    position: relative;
+    width: 90%;
+    overflow: hidden;
+}
+
+/* Camada interna com gradiente (não atrapalha a cor) */
+.mesa::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 30%, rgba(0,0,0,0.35) 75%);
+    border-radius: 20px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.mesa > * {
+    position: relative;
+    z-index: 1;
+}
+
+.computador, .jogador {
+    padding: 15px;
+}
+
+.centro {
+    min-height: 160px;
+    padding: 20px;
+}
+
+.centro h2,
+.computador h2,
+.jogador h2 {
+    color: #f5e4b0;
+    text-shadow: 0 2px 5px #0008;
+}
+
+/* ===== TABULEIRO ===== */
+#tabuleiro {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 0;
+    min-height: 220px;
+    max-width: 100%;
+    padding: 25px 10px;
+    overflow: visible;
+}
+
+/* Linha de peças na mesa */
+.linha-mesa {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: nowrap;
+    margin: 20px 0;
+}
+
+/* Animação: peça aparecendo na mesa */
+#tabuleiro .peca {
+    animation: cairNaMesa 0.35s ease-out;
+    margin: 0 -6px;
+}
+
+/* Quebra de linha automática quando encher */
+@media (max-width: 800px) {
+    #tabuleiro {
+        max-width: 90%;
+        margin: 0 auto;
+    }
+}
+
+/* ===== PEÇA CARROÇA NA VERTICAL ===== */
+.peca.vertical {
+    transform: rotate(90deg);
+    margin: 0 -8px;
+}
+
+.peca.vertical:hover {
+    transform: rotate(90deg) translateY(-5px) scale(1.08);
+    z-index: 10;
+}
+
+/* ===== MÃO DO JOGADOR ===== */
+#minhas-pecas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 80px;
+    padding: 10px;
+}
+
+/* ===== PLACAR ===== */
+.placar {
+    background: linear-gradient(145deg, #164b32, #092c20);
+    border: 2px solid #c49b50;
+    border-radius: 15px;
+    box-shadow: 0 8px 15px #0006;
+    margin: 20px auto;
+    padding: 10px;
+    width: 200px;
+}
+
+/* ===== PEÇAS DO DOMINÓ ===== */
+.peca {
+    width: 105px;
+    height: 55px;
+    background: linear-gradient(145deg, #ffffff, #eee9dc, #c9c2b4);
+    border: 2px solid #b7ad9d;
+    border-radius: 9px;
+    box-shadow:
+        0 3px 0 #a69d8e,
+        0 6px 0 #777064,
+        0 10px 15px #0008;
+    transition: transform 0.2s, z-index 0s;
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    position: relative;
+    z-index: 1;
+}
+
+.peca:hover {
+    transform: translateY(-6px) scale(1.06);
+    z-index: 10;
+    box-shadow:
+        0 5px 0 #a69d8e,
+        0 10px 0 #777064,
+        0 15px 20px #0009;
+}
+
+.peca:active {
+    transform: translateY(2px) scale(0.98);
+    box-shadow:
+        0 1px 0 #a69d8e,
+        0 2px 0 #777064,
+        0 4px 6px #0008;
+}
+
+.lado {
+    width: 45%;
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.divisoria {
+    width: 2px;
+    height: 75%;
+    background: #aaa395;
+}
+
+.bolinhas {
+    width: 35px;
+    height: 35px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 2px;
+}
+
+.bolinhas span {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bolinhas .bolinha {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #555, #050505);
+    box-shadow:
+        inset 0 1px 2px #ffffff33,
+        0 1px 2px #0008;
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes aparecer {
+    from {
+        opacity: 0;
+        transform: translateY(15px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes cairNaMesa {
+    0% {
+        opacity: 0;
+        transform: translateY(20px) scale(0.85);
+    }
+    60% {
+        transform: translateY(-5px) scale(1.05);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* ===== MENSAGENS ===== */
+#mensagem {
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffe28a;
+    margin: 20px;
+}
+
+/* ===== CONTROLES ===== */
+.controles {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin: 20px;
+    flex-wrap: wrap;
+}
+
+.controles button {
+    background: #f5d77a;
+    color: #222;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.controles button:hover {
+    background: #fff0ae;
+    transform: translateY(-2px);
+}
+
+.controles button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* ===== TELA INICIAL ===== */
+.tela-inicial {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #174c32, #071b13 85%);
+    padding: 20px;
+}
+
+.menu-conteudo {
+    width: 100%;
+    max-width: 550px;
+    padding: 50px 25px;
+    background: linear-gradient(145deg, #174d35, #09291c);
+    border: 3px solid #bd974c;
+    border-radius: 25px;
+    box-shadow:
+        0 15px 40px #0009,
+        inset 0 0 30px #ffffff0a;
+}
+
+.menu-conteudo h1 {
+    color: #f5d77a;
+    font-size: 38px;
+    text-shadow: 0 4px 10px #000;
+}
+
+.menu-conteudo p {
+    color: #e7dfc5;
+    margin-bottom: 35px;
+}
+
+.menu-conteudo button {
+    display: block;
+    width: 85%;
+    margin: 15px auto;
+    padding: 16px;
+    border: 2px solid #e0bb67;
+    border-radius: 12px;
+    background: linear-gradient(145deg, #e6c77a, #b68b39);
+    color: #17251b;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.menu-conteudo button:hover {
+    transform: scale(1.05);
+    filter: brightness(1.15);
+}
+
+.menu-rodape {
+    margin-top: 35px;
+    color: #c5b98d;
+    font-size: 11px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* SELETOR DE DIFICULDADE */
+.seletor-dificuldade {
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+}
+
+.seletor-dificuldade label {
+    color: #f5d77a;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.seletor-dificuldade select {
+    width: 85%;
+    padding: 13px;
+    border-radius: 10px;
+    border: 2px solid #bd974c;
+    background: #e9dfc5;
+    color: #17251b;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
